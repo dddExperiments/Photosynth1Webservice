@@ -1,4 +1,4 @@
-### Photosynth service.
+### Photosynth1 Webservice.
 
 photosynth.net is down thus the web-service used by the ps1 synther is not available anymore.
 This node.js service can be used as a replacement.
