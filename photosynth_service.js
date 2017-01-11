@@ -340,3 +340,4 @@ function handleRequest(request, response) {
 }
 
 http.createServer(handleRequest).listen(_port);
+console.log('Photosynth service started on port ' + _port);

@@ -1,4 +1,6 @@
 {
+  "name": "Photosynth1Webservice",
+  "description": "Photosynth service receiving ps1 synther requests and saving ps1 as zip file.",
   "version": "1.0.0",
   "private": true,
   "dependencies": {

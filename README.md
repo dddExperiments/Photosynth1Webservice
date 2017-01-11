@@ -3,6 +3,7 @@
 photosynth.net is down thus the web-service used by the ps1 synther is not available anymore.
 This node.js service can be used as a replacement.
 Instead of saving the ps1 synth to the cloud it will be saved as zip file in the output folder.
+And it can then be viewed with the local [offline viewer](https://github.com/dddExperiments/offlineViewer).
 
 ### Setup
 
