@@ -13,7 +13,7 @@ c:\windows\system32\drivers\etc\hosts
 ```
 and add the following line:
 ```
-127.0.0.1 photosynth.net
+127.0.0.2 photosynth.net
 ```
 Note that writing to this file require administrator privilege.
 

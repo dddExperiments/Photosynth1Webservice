@@ -10,6 +10,7 @@ var zipFolder = require('./zip-folder');
 var unzip     = require('unzip');
 var he        = require('he');
 var DOMParser = require('xmldom').DOMParser;
+var sprintf   = require('sprintf-js').sprintf;
 
 var _port = 80;
 var _upload_url = "/photosynthws/upload.ashx";
@@ -148,15 +149,15 @@ function GetPropertiesFileBody(name, guid, manifest) {
 
 function GetSoapFileBody(guid) {
 	var body = '';
-	body += '<GetCollectionDataResponse xmlns="http://labs.live.com/">';
-	body += '<GetCollectionDataResult>';
-	body += '<Result>OK</Result>';
-	body += '<CollectionType>Synth</CollectionType>';
-	body += '<DzcUrl>http://cdn4.ps1.photosynth.net/synth/'+guid+'/metadata.dzc</DzcUrl>';
-	body += '<JsonUrl>http://cdn4.ps1.photosynth.net/synth/'+guid+'/metadata.synth_files/0.json</JsonUrl>';
-	body += '<CollectionRoot>http://cdn4.ps1.photosynth.net/synth/'+guid+'/metadata.synth_files/</CollectionRoot>';
-	body += '<PrivacyLevel>Public</PrivacyLevel>';
-	body += '</GetCollectionDataResult>';
+	body += '<GetCollectionDataResponse xmlns="http://labs.live.com/">\n';
+	body += '	<GetCollectionDataResult>\n';
+	body += '		<Result>OK</Result>\n';
+	body += '		<CollectionType>Synth</CollectionType>\n';
+	body += '		<DzcUrl>http://cdn4.ps1.photosynth.net/synth/'+guid+'/metadata.dzc</DzcUrl>\n';
+	body += '		<JsonUrl>http://cdn4.ps1.photosynth.net/synth/'+guid+'/metadata.synth_files/0.json</JsonUrl>\n';
+	body += '		<CollectionRoot>http://cdn4.ps1.photosynth.net/synth/'+guid+'/metadata.synth_files/</CollectionRoot>\n';
+	body += '		<PrivacyLevel>Public</PrivacyLevel>\n';
+	body += '	</GetCollectionDataResult>\n';
 	body += '</GetCollectionDataResponse>';
 
 	return CreateSoapResponseBody(body);
@@ -236,10 +237,14 @@ function handleRequest(request, response) {
 				} else if (action == "AddSynthPhoto") {
 					response.writeHead(200, {'Content-Type': 'text/html'});
 					var image_hash = GetImageHash(body);
-					var image_guid = Guid.raw();
+					var image_guid = "m00000000-" + sprintf("%011d", _image_counter);
 					_image_mapping[image_hash] = {guid: image_guid, index: _image_counter};
 					response.end(AddSynthPhotoResponse(image_guid));
+					_image_counter++;
 				} else if (action == "CommitSynth") {
+					// Writing comments.json
+					fs.writeFileSync(path.join(_output_folder, _guid, "comments.json"), JSON.stringify([]));
+
 					// Writing properties.json
 					fs.writeFile(path.join(_output_folder, _guid, "properties.json"), GetPropertiesFileBody(_name, _guid, GetManifest(body)), function(err) {
 						
@@ -339,5 +344,5 @@ function handleRequest(request, response) {
 	}
 }
 
-http.createServer(handleRequest).listen(_port);
+http.createServer(handleRequest).listen(_port, '127.0.0.2');
 console.log('Photosynth service started on port ' + _port);
