@@ -1,7 +1,7 @@
 "use strict";
 
 var qs        = require('querystring');
-var uuid      = require('node-uuid');
+var uuid      = require('uuid');
 var http      = require('http');
 var fs        = require('fs');
 var path      = require('path');
