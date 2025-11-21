@@ -1,7 +1,7 @@
 "use strict";
 
 var qs        = require('querystring');
-var Guid      = require('guid');
+var uuid      = require('node-uuid');
 var http      = require('http');
 var fs        = require('fs');
 var path      = require('path');
@@ -15,7 +15,7 @@ var sprintf   = require('sprintf-js').sprintf;
 var _port = 80;
 var _upload_url = "/photosynthws/upload.ashx";
 var _processing_synth = false; // only support one synth at a time.
-var _guid = Guid.EMPTY;
+var _guid = uuid.NIL;
 var _output_folder = "output";
 var _image_mapping = {};
 var _image_counter = 0;
@@ -226,7 +226,7 @@ function handleRequest(request, response) {
 						_processing_synth = true;
 						_image_counter = 0;
 						_image_mapping = {};
-						_guid = Guid.raw();
+						_guid = uuid.v4();
 						_name = GetName(body);
 						fs_extra.mkdirsSync(path.join(_output_folder, _guid, 'images'));
 						fs_extra.mkdirsSync(path.join(_output_folder, _guid, 'points'));
